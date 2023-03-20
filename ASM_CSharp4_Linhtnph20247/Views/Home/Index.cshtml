@@ -1,0 +1,32 @@
+﻿@model IEnumerable<ASM_CSharp4_Linhtnph20247.Models.Product>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+<br/>
+<h2 class="text-center fw-bold">Danh Sách Sản Phẩm</h2>
+<hr/>
+<div class="container">
+    <div class="row">
+        @foreach (var item in Model) {
+        <div class="col-md-3 col-6">
+                <img src="@Html.DisplayFor(modelItem => item.ImageUrl)"/>
+                    <p>@Html.DisplayFor(modelItem => item.Name)</p>
+                <span class="text-danger fw-bold"> @Html.DisplayFor(modelItem => item.Price)₫ </span>
+                <del class="text-muted fw-bold">@Html.DisplayFor(modelItem => item.Price)₫</del>
+        </div>
+        }
+    </div><br/>
+    <h2 class="text-center fw-bold">Tin Tức Nổi Bật</h2>
+    <hr/>
+    <div class="row">
+    <div class="col-lg-6">
+        <img src="https://images.fpt.shop/unsafe/fit-in/300x200/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/3/17/638146902227206696_750x500-2x.png"/>
+        <h3>Giá sốc cuối tuần, FPT Shop giảm giá đến hơn 50% và ưu đãi trả góp 0% cho nhiều sản phẩm</h3>
+    </div>
+        <div class="col-lg-6">
+            <img src="https://images.fpt.shop/unsafe/fit-in/300x200/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/3/17/638146879056284181_chi-co-n.png"/>
+            <h3 class="news__item__tit">Xiaomi ‘lên kệ’ robot hút bụi mới, ưu đãi đến 4,99 triệu đồng và trả góp 0% tại FPT shop</h3>
+        </div>
+    </div>
+</div>
