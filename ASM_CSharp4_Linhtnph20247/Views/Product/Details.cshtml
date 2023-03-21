@@ -4,11 +4,8 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Product</h4>
-    <hr />
+<div class="container">
+    <h2 class="text-center fw-bold">Product Detail</h2>
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
@@ -53,10 +50,10 @@
             @Html.DisplayFor(model => model.Size)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ImageUrl)
+            Image
         </dt>
         <dd class = "col-sm-10">
-            <img src="@Html.DisplayFor(model => model.ImageUrl)"/>
+            <img src="~/@Html.DisplayFor(model => model.ImageUrl)"/>
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Status)
@@ -65,8 +62,15 @@
             @Html.DisplayFor(model => model.Status)
         </dd>
     </dl>
+    <div>
+        <button type="button" class="btn btn-danger">
+            <a class="text-decoration-none text-white" href="/Product/Edit/@Html.ValueFor(p=>p.Id)">Sửa</a>
+        </button>
+    </div>
 </div>
+<br/>
 <div>
-    @Html.ActionLink("Edit", "Edit", new { id = @Html.ValueFor(p=>p.Id) })
-    <a asp-action="Product">Back to List</a>
+    <button type="button" class="btn btn-primary">
+        <a class="text-decoration-none text-white" asp-action="Product">Back to List</a>
+    </button>
 </div>

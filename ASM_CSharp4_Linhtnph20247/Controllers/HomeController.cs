@@ -24,6 +24,31 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
             return View("Index", products);
         }
 
+        public IActionResult Shop()
+        {
+            List<Product> products = _productService.GetAllProduct();
+            return View("Shop", products);
+        }
+
+        public IActionResult ProductDetail(Guid id)
+        {
+            Product product = _productService.GetProductById(id);
+            return View("ProductDetail", product);
+        }
+
+        public IActionResult Contact()
+        {
+            return View("Contact");
+        }
+
+        public IActionResult Blog()
+        {
+            return View("Blog");
+        }
+        public IActionResult BlogDetail()
+        {
+            return View("BlogDetail");
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

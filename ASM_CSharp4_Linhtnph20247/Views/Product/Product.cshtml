@@ -2,68 +2,58 @@
 
 @{
     ViewData["Title"] = "Product";
+    var productList = Model.ToList();
 }
 
-<h1 class="text-center">Product</h1>
+<h2 class="text-center fw-bold">Product</h2>
 
 <p>
-    <button type="button" class="btn btn-primary"><a class="text-decoration-none text-white" asp-action="Create">Create Product</a></button>
+    <button type="button" class="btn btn-primary">
+        <a class="text-decoration-none text-white" asp-action="Create">Create Product</a>
+    </button>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                Image
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Brand)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Size)
-            </th>
-        </tr>
-    </thead>
+<table class="table container">
+    <tr class="table-warning">
+        <td>STT</td>
+        <td>Tên Sp</td>
+        <td>Ảnh</td>
+        <td>Giá Bán</td>
+        <td>Số Lượng Tồn</td>
+        <td>Update-Delete</td>
+        <td>Load Detail</td>
+    </tr>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                <img src="@Html.DisplayFor(modelItem => item.ImageUrl)"/>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            <td>
-                @Html.DisplayFor(modelItem => item.Brand)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Size)
-            </td>
-            <td>
-                <button type="button" class="btn btn-success">
-                    <a class="text-decoration-none text-white" href="/Product/Edit/@item.Id">Edit</a>
-                </button>
-                <button type="button" class="btn btn-success">
-                    <a class="text-decoration-none text-white" href="/Product/Detail/@item.Id">Detail</a>
-                </button>
-                <button type="button" class="btn btn-danger">
-                    <a class="text-decoration-none text-white" href="/Product/Delete/@item.Id">Delete</a>
-                </button>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model) {
+            var index = productList.IndexOf(item) + 1;
+            <tr>
+                <td> 
+                    @index
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <img src="~/@Html.DisplayFor(modelItem => item.ImageUrl)" style="height: 80px;">
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    <button type="button" class="btn btn-danger">
+                        <a class="text-decoration-none text-white" href="/Product/Edit/@item.Id">Sửa</a>
+                    </button>
+                    <button type="button" class="btn btn-danger">
+                        <a class="text-decoration-none text-white" href="/Product/Delete/@item.Id">Xóa</a>
+                    </button>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-success">
+                        <a class="text-decoration-none text-white" href="/Product/Details/@item.Id">Chi Tiết</a>
+                    </button></td>
+            </tr>
+      }
     </tbody>
 </table>
