@@ -15,7 +15,6 @@
     <None Include="wwwroot\Styles\img\blog\blog-4.jpg" />
     <None Include="wwwroot\Styles\img\blog\blog-5.jpg" />
     <None Include="wwwroot\Styles\img\blog\blog-6.jpg" />
-    <None Include="wwwroot\Styles\img\blog\details\details-author.jpg" />
     <None Include="wwwroot\Styles\img\blog\details\details-hero.jpg" />
     <None Include="wwwroot\Styles\img\blog\details\details-pic.jpg" />
     <None Include="wwwroot\Styles\img\blog\sidebar\sr-1.jpg" />

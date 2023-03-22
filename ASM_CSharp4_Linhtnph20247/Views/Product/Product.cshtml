@@ -15,8 +15,8 @@
 <table class="table container">
     <tr class="table-warning">
         <td>STT</td>
-        <td>Tên Sp</td>
         <td>Ảnh</td>
+        <td>Tên Sp</td>
         <td>Giá Bán</td>
         <td>Số Lượng Tồn</td>
         <td>Update-Delete</td>
@@ -30,10 +30,10 @@
                     @index
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
+                    <img src="~/@Html.DisplayFor(modelItem => item.ImageUrl)" style="height: 80px;">
                 </td>
                 <td>
-                    <img src="~/@Html.DisplayFor(modelItem => item.ImageUrl)" style="height: 80px;">
+                    @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Price)
