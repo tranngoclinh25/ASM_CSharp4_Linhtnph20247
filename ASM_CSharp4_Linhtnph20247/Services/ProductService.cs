@@ -14,7 +14,7 @@ namespace ASM_CSharp4_Linhtnph20247.Services
         }
         public List<Product> GetAllProduct()
         {
-            return _shopDbContext.Products.ToList(); // Lấy tất cả các sản phẩm
+            return _shopDbContext.Products.Where(p=>p.Status == 1).ToList(); // Lấy tất cả các sản phẩm
         }
 
         public Product GetProductById(Guid id)
@@ -35,8 +35,8 @@ namespace ASM_CSharp4_Linhtnph20247.Services
                 product.Id = Guid.NewGuid();
                 product.CreatedAt = DateTime.Now;
                 _shopDbContext.Products.Add(product);
-                _shopDbContext.SaveChanges();
-                return true;
+                    _shopDbContext.SaveChanges();
+                    return true;
             }
             catch (Exception e)
             {
@@ -49,17 +49,21 @@ namespace ASM_CSharp4_Linhtnph20247.Services
             try
             {
                 var p = _shopDbContext.Products.FirstOrDefault(p => p.Id == product.Id);
-                p.Name = product.Name;
-                p.Description = product.Description;
-                p.Price = product.Price;
-                p.Quantity = product.Quantity;
-                p.CreatedAt = product.CreatedAt;
-                p.Brand = product.Brand;
-                p.Size = product.Size;
-                p.ImageUrl = product.ImageUrl;
-                p.Status = product.Status;
-                _shopDbContext.SaveChanges();
-                return true;
+                //if (product.Price > p.Price)
+                //{
+                    p.Name = product.Name;
+                    p.Description = product.Description;
+                    p.Price = product.Price;
+                    p.Quantity = product.Quantity;
+                    p.CreatedAt = product.CreatedAt;
+                    p.Brand = product.Brand;
+                    p.Size = product.Size;
+                    p.ImageUrl = product.ImageUrl;
+                    p.Status = product.Status;
+                    _shopDbContext.SaveChanges();
+                    return true;
+                //}
+                return false;
             }
             catch (Exception e)
             {

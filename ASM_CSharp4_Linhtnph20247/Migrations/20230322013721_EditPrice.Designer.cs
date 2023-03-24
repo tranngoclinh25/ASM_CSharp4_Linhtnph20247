@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASM_CSharp4_Linhtnph20247.Migrations
 {
     [DbContext(typeof(ShopDbContext))]
-    [Migration("20230318083328_Update-Product")]
-    partial class UpdateProduct
+    [Migration("20230322013721_EditPrice")]
+    partial class EditPrice
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

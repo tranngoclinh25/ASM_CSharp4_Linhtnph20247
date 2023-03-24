@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASM_CSharp4_Linhtnph20247.Migrations
 {
     [DbContext(typeof(ShopDbContext))]
-    [Migration("20230318082839_CreateDb")]
+    [Migration("20230322010432_CreateDb")]
     partial class CreateDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -137,9 +137,6 @@ namespace ASM_CSharp4_Linhtnph20247.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -155,7 +152,10 @@ namespace ASM_CSharp4_Linhtnph20247.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("Price")
+                    b.Property<float>("PriceNew")
+                        .HasColumnType("real");
+
+                    b.Property<float>("PriceOld")
                         .HasColumnType("real");
 
                     b.Property<int>("Quantity")
