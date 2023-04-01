@@ -1,0 +1,9 @@
+﻿namespace ASM_CSharp4_Linhtnph20247.Models
+{
+    public class Size
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public virtual ICollection<Product> Products { get; set; }
+    }
+}

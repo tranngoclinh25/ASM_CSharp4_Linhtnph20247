@@ -1,6 +1,7 @@
 ﻿using ASM_CSharp4_Linhtnph20247.ContextEF;
 using ASM_CSharp4_Linhtnph20247.Models;
 using ASM_CSharp4_Linhtnph20247.Services.IServices;
+using ASM_CSharp4_Linhtnph20247.ViewModel;
 
 namespace ASM_CSharp4_Linhtnph20247.Services
 {
@@ -44,22 +45,24 @@ namespace ASM_CSharp4_Linhtnph20247.Services
             }
         }
 
-        public bool UpdateProduct(Product product)
+        public bool UpdateProduct(ProductViewModel model, Guid id)
         {
             try
             {
-                var p = _shopDbContext.Products.FirstOrDefault(p => p.Id == product.Id);
-                //if (product.Price > p.Price)
+                var p = _shopDbContext.Products.FirstOrDefault(p => p.Id == id);
+                //if (model.Price > p.Price)
                 //{
-                    p.Name = product.Name;
-                    p.Description = product.Description;
-                    p.Price = product.Price;
-                    p.Quantity = product.Quantity;
-                    p.CreatedAt = product.CreatedAt;
-                    p.Brand = product.Brand;
-                    p.Size = product.Size;
-                    p.ImageUrl = product.ImageUrl;
-                    p.Status = product.Status;
+                    p.Name = model.Name;
+                    p.BrandId = model.BrandId;
+                    p.SizeId = model.SizeId;
+                    p.Description = model.Description;
+                    p.Price = model.Price;
+                    p.Quantity = model.Quantity;
+                    p.Brand = model.Brand;
+                    p.Size = model.Size;
+                    p.ImageUrl = model.ImageUrl;
+                    p.Status = model.Status;
+                    _shopDbContext.Products.Update(p);
                     _shopDbContext.SaveChanges();
                     return true;
                 //}

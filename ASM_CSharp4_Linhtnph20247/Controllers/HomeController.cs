@@ -4,6 +4,7 @@ using System.Diagnostics;
 using _2_ASP.NET_MVC.Models;
 using ASM_CSharp4_Linhtnph20247.Services;
 using ASM_CSharp4_Linhtnph20247.Services.IServices;
+using ASM_CSharp4_Linhtnph20247.ViewModel;
 
 namespace ASM_CSharp4_Linhtnph20247.Controllers
 {
@@ -11,29 +12,43 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IProductService _productService;
+        private readonly ISizeService _sizeService;
+        private readonly IBrandService _brandService;
 
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
             _productService = new ProductService();
+            _sizeService = new SizeService();
+            _brandService = new BrandService();
         }
 
         public IActionResult Index()
         {
-            List<Product> products = _productService.GetAllProduct();
-            return View("Index", products);
+            var viewModel = new ProductViewModel();
+            viewModel.Products = _productService.GetAllProduct();
+            return View("Index", viewModel);
         }
 
         public IActionResult Shop()
         {
-            List<Product> products = _productService.GetAllProduct();
-            return View("Shop", products);
+            var viewModel = new ProductViewModel();
+            viewModel.Products = _productService.GetAllProduct();
+            return View("Shop", viewModel);
         }
-
+        [HttpGet]
         public IActionResult ProductDetail(Guid id)
         {
             Product product = _productService.GetProductById(id);
-            return View("ProductDetail", product);
+            Brand brand = _brandService.GetBrandById(product.BrandId);
+            Size size = _sizeService.GetSizeById(product.SizeId);
+            var viewModel = new ProductViewModel()
+            {
+                Product = product,
+                Size = size,
+                Brand = brand
+            };
+            return View("ProductDetail", viewModel);
         }
 
         public IActionResult Contact()

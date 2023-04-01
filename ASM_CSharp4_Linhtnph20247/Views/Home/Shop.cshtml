@@ -1,4 +1,5 @@
-﻿@model IEnumerable<ASM_CSharp4_Linhtnph20247.Models.Product>
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model ASM_CSharp4_Linhtnph20247.ViewModel.ProductViewModel
 @{
     ViewData["Title"] = "Shop";
 }
@@ -351,7 +352,7 @@
                         </div>
                         <div class="col-lg-4 col-md-4">
                             <div class="filter__found">
-                                <h6><span>@Model.Count()</span>Products found</h6>
+                                <h6><span>@Model.Products.Count()</span>Products found</h6>
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-3">
@@ -364,7 +365,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    @foreach (var item in Model)
+                    @foreach (var item in Model.Products)
                     {
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">

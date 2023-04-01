@@ -1,4 +1,4 @@
-﻿@model ASM_CSharp4_Linhtnph20247.Models.Product
+﻿@model ASM_CSharp4_Linhtnph20247.ViewModel.ProductViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -10,47 +10,53 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+                <input asp-for="Name" class="form-control"/>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="BrandId">Brand</label>
+                <select asp-for="BrandId" class="form-control">
+                    <option value="@Model.BrandId">-- Select Brand --</option>
+                    @foreach (var brand in Model.Brands)
+                    {
+                        <option value="@brand.Value">@brand.Text</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="SizeId">Size</label>
+                <select asp-for="SizeId" class="form-control">
+                    <option value="@Model.SizeId">-- Select Size --</option>
+                    @foreach (var size in Model.Sizes)
+                    {
+                        <option value="@size.Value">@size.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+                <input asp-for="Description" class="form-control"/>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
+                <input asp-for="Price" class="form-control"/>
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Quantity" class="control-label"></label>
-                <input asp-for="Quantity" class="form-control" />
+                <input asp-for="Quantity" class="form-control"/>
                 <span asp-validation-for="Quantity" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CreatedAt" class="control-label"></label>
-                <input asp-for="CreatedAt" class="form-control" />
-                <span asp-validation-for="CreatedAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Brand" class="control-label"></label>
-                <input asp-for="Brand" class="form-control" />
-                <span asp-validation-for="Brand" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Size" class="control-label"></label>
-                <input asp-for="Size" class="form-control" />
-                <span asp-validation-for="Size" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="ImageUrl" class="control-label"></label>
-                <input asp-for="ImageUrl" class="form-control" />
+                <input asp-for="ImageUrl" class="form-control"/>
                 <span asp-validation-for="ImageUrl" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" />
+                <input asp-for="Status" class="form-control"/>
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
             <div class="form-group">

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASM_CSharp4_Linhtnph20247.Migrations
 {
     [DbContext(typeof(ShopDbContext))]
-    [Migration("20230322013721_EditPrice")]
-    partial class EditPrice
+    [Migration("20230329082824_AddDb")]
+    partial class AddDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,21 @@ namespace ASM_CSharp4_Linhtnph20247.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("ASM_CSharp4_Linhtnph20247.Models.Brand", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Brand");
+                });
 
             modelBuilder.Entity("ASM_CSharp4_Linhtnph20247.Models.Cart", b =>
                 {
@@ -133,9 +148,8 @@ namespace ASM_CSharp4_Linhtnph20247.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Brand")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("BrandId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -158,14 +172,17 @@ namespace ASM_CSharp4_Linhtnph20247.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<string>("Size")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("SizeId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BrandId");
+
+                    b.HasIndex("SizeId");
 
                     b.ToTable("Products");
                 });
@@ -208,6 +225,21 @@ namespace ASM_CSharp4_Linhtnph20247.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("RoleUsers");
+                });
+
+            modelBuilder.Entity("ASM_CSharp4_Linhtnph20247.Models.Size", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Size");
                 });
 
             modelBuilder.Entity("ASM_CSharp4_Linhtnph20247.Models.User", b =>
@@ -315,6 +347,25 @@ namespace ASM_CSharp4_Linhtnph20247.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("ASM_CSharp4_Linhtnph20247.Models.Product", b =>
+                {
+                    b.HasOne("ASM_CSharp4_Linhtnph20247.Models.Brand", "Brand")
+                        .WithMany("Products")
+                        .HasForeignKey("BrandId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ASM_CSharp4_Linhtnph20247.Models.Size", "Size")
+                        .WithMany("Products")
+                        .HasForeignKey("SizeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Brand");
+
+                    b.Navigation("Size");
+                });
+
             modelBuilder.Entity("ASM_CSharp4_Linhtnph20247.Models.RoleUser", b =>
                 {
                     b.HasOne("ASM_CSharp4_Linhtnph20247.Models.Role", "Role")
@@ -332,6 +383,11 @@ namespace ASM_CSharp4_Linhtnph20247.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ASM_CSharp4_Linhtnph20247.Models.Brand", b =>
+                {
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("ASM_CSharp4_Linhtnph20247.Models.Cart", b =>
@@ -354,6 +410,11 @@ namespace ASM_CSharp4_Linhtnph20247.Migrations
             modelBuilder.Entity("ASM_CSharp4_Linhtnph20247.Models.Role", b =>
                 {
                     b.Navigation("RoleUsers");
+                });
+
+            modelBuilder.Entity("ASM_CSharp4_Linhtnph20247.Models.Size", b =>
+                {
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("ASM_CSharp4_Linhtnph20247.Models.User", b =>

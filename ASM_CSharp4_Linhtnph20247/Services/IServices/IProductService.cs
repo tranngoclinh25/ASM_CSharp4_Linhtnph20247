@@ -1,4 +1,5 @@
 ﻿using ASM_CSharp4_Linhtnph20247.Models;
+using ASM_CSharp4_Linhtnph20247.ViewModel;
 
 namespace ASM_CSharp4_Linhtnph20247.Services.IServices
 {
@@ -8,7 +9,7 @@ namespace ASM_CSharp4_Linhtnph20247.Services.IServices
         public Product GetProductById(Guid id);
         public List<Product> GetProductByName(string name);
         public bool CreateProduct(Product product);
-        public bool UpdateProduct(Product product);
+        public bool UpdateProduct(ProductViewModel model, Guid id);
         public bool DeleteProduct(Guid id);
     }
 }

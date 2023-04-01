@@ -1,4 +1,4 @@
-﻿@model ASM_CSharp4_Linhtnph20247.Models.Product
+﻿@model ASM_CSharp4_Linhtnph20247.ViewModel.ProductViewModel
 
 @{
     ViewData["Title"] = "ProductDetail";
@@ -11,7 +11,7 @@
                     <div class="product__details__pic">
                         <div class="product__details__pic__item">
                             <img class="product__details__pic__item--large"
-                                 src="~/@Html.DisplayFor(model => model.ImageUrl)">
+                                 src="~/@Html.DisplayFor(model => model.Product.ImageUrl)">
                         </div>
                         <div class="product__details__pic__slider owl-carousel">
                             <img data-imgbigurl="~/Styles/img/product/details/product-details-2.jpg"
@@ -28,7 +28,7 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="product__details__text">
                         <h3>
-                            @Html.DisplayFor(model => model.Name)
+                            @Html.DisplayFor(model => model.Product.Name)
                         </h3>
                         <div class="product__details__rating">
                             <i class="fa fa-star"></i>
@@ -39,10 +39,10 @@
                             <span>(18 reviews)</span>
                         </div>
                         <div class="product__details__price">
-                            $@Html.DisplayFor(model => model.Price)
+                            $@Html.DisplayFor(model => model.Product.Price)
                         </div>
                         <p>
-                            @Html.DisplayFor(model => model.Description)
+                            @Html.DisplayFor(model => model.Product.Description)
                         </p>
                         <div class="product__details__quantity">
                             <div class="quantity">
@@ -54,9 +54,9 @@
                         <a href="#" class="primary-btn">ADD TO CART</a>
                         <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
                         <ul>
-                            <li><b>Quantity in stock</b> <span>@Html.DisplayFor(model => model.Quantity)</span></li>
-                            <li><b>Brand</b> <span>@Html.DisplayFor(model => model.Brand)</span></li>
-                            <li><b>Size</b> <span>@Html.DisplayFor(model => model.Size)</span></li>
+                            <li><b>Quantity in stock</b> <span>@Html.DisplayFor(model => model.Product.Quantity)</span></li>
+                            <li><b>Brand</b> <span>@Html.DisplayFor(model => model.Brand.Name)</span></li>
+                            <li><b>Size</b> <span>@Html.DisplayFor(model => model.Size.Name)</span></li>
                             <li><b>Share on</b>
                                 <div class="share">
                                     <a href="#"><i class="fa fa-facebook"></i></a>

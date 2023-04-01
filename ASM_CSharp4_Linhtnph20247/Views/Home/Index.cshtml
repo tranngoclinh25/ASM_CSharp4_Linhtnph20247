@@ -1,8 +1,9 @@
-﻿@model IEnumerable<ASM_CSharp4_Linhtnph20247.Models.Product>
-
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model ASM_CSharp4_Linhtnph20247.ViewModel.ProductViewModel
 @{
     ViewData["Title"] = "Home Page";
 }    
+
 <!-- Hero Section Begin -->
     <section class="hero">
         <div class="container">
@@ -148,7 +149,7 @@
             </div>
         </div>
         <div class="row featured__filter">
-            @foreach (var item in Model) {
+            @foreach (var item in Model.Products) {
             <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat">
                 <div class="featured__item">
                     <div class="featured__item__pic set-bg" data-setbg="@Html.DisplayFor(modelItem => item.ImageUrl)">

@@ -1,8 +1,7 @@
-﻿@model IEnumerable<ASM_CSharp4_Linhtnph20247.Models.Product>
-
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model ASM_CSharp4_Linhtnph20247.ViewModel.ProductViewModel
 @{
     ViewData["Title"] = "Product";
-    var productList = Model.ToList();
 }
 
 <h2 class="text-center fw-bold">Product</h2>
@@ -23,35 +22,36 @@
         <td>Load Detail</td>
     </tr>
     <tbody>
-        @foreach (var item in Model) {
-            var index = productList.IndexOf(item) + 1;
+        @foreach (var product in Model.Products)
+        {
+            var index = Model.Products.FindIndex(p => p.Id == product.Id) + 1;
             <tr>
                 <td> 
                     @index
                 </td>
                 <td>
-                    <img src="~/@Html.DisplayFor(modelItem => item.ImageUrl)" style="height: 80px;">
+                    <img src="~/@Html.DisplayFor(modelItem => product.ImageUrl)" style="height: 80px;">
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
+                    @Html.DisplayFor(modelItem => product.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Price)
+                    @Html.DisplayFor(modelItem => product.Price)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Quantity)
+                    @Html.DisplayFor(modelItem => product.Quantity)
                 </td>
                 <td>
                     <button type="button" class="btn btn-danger">
-                        <a class="text-decoration-none text-white" href="/Product/Edit/@item.Id">Sửa</a>
+                        <a class="text-decoration-none text-white" href="/Product/Edit/@product.Id">Sửa</a>
                     </button>
                     <button type="button" class="btn btn-danger">
-                        <a class="text-decoration-none text-white" href="/Product/Delete/@item.Id">Xóa</a>
+                        <a class="text-decoration-none text-white" href="/Product/Delete/@product.Id">Xóa</a>
                     </button>
                 </td>
                 <td>
                     <button type="button" class="btn btn-success">
-                        <a class="text-decoration-none text-white" href="/Product/Details/@item.Id">Chi Tiết</a>
+                        <a class="text-decoration-none text-white" href="/Product/Details/@product.Id">Chi Tiết</a>
                     </button></td>
             </tr>
       }
