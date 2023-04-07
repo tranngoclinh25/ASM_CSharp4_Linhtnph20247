@@ -6,6 +6,7 @@ namespace ASM_CSharp4_Linhtnph20247.ViewModel
     public class ProductViewModel
     {
         //Product
+        public int QuantityAddToCart { get; set; }
         public Product Product { get; set; }
         public List<Product> Products { get; set; }
         public Guid Id { get; set; }

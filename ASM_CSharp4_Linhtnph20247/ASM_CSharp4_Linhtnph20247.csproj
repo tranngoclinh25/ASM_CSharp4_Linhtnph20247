@@ -86,4 +86,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Styles\img\computer\" />
+  </ItemGroup>
+
 </Project>

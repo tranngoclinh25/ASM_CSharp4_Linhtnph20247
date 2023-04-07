@@ -5,6 +5,7 @@ using _2_ASP.NET_MVC.Models;
 using ASM_CSharp4_Linhtnph20247.Services;
 using ASM_CSharp4_Linhtnph20247.Services.IServices;
 using ASM_CSharp4_Linhtnph20247.ViewModel;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ASM_CSharp4_Linhtnph20247.Controllers
 {
@@ -40,13 +41,24 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
         public IActionResult ProductDetail(Guid id)
         {
             Product product = _productService.GetProductById(id);
-            Brand brand = _brandService.GetBrandById(product.BrandId);
-            Size size = _sizeService.GetSizeById(product.SizeId);
             var viewModel = new ProductViewModel()
             {
                 Product = product,
-                Size = size,
-                Brand = brand
+                Brand = product.Brand,
+                Size = product.Size,
+                Sizes = _sizeService.GetAllSizes().Select(s => new SelectListItem
+                {
+                    Value = s.Id.ToString(),
+                    Text = s.Name
+                }).ToList(),
+                SizeName = product.Size.Name,
+                Brands = _brandService.GetAllBrand().Select(b => new SelectListItem
+                {
+                    Value = b.Id.ToString(),
+                    Text = b.Name
+                }).ToList(),
+                BrandName = product.Brand.Name,
+                QuantityAddToCart = 1
             };
             return View("ProductDetail", viewModel);
         }

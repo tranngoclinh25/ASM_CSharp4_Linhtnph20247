@@ -369,16 +369,23 @@
                     {
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="~/@Html.DisplayFor(modelItem => item.ImageUrl)">
-                                    <img src="~/@Html.DisplayFor(modelItem => item.ImageUrl)">
-                                    <ul class="product__item__pic__hover">
-                                        <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                        <li><a href="/Home/ProductDetail/@item.Id"><i class="fa fa-retweet"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                    </ul>
-                                </div>
+                                @if (System.IO.Path.GetExtension(item.ImageUrl) == ".jpg" ||
+                                     System.IO.Path.GetExtension(item.ImageUrl) == ".png" ||
+                                     System.IO.Path.GetExtension(item.ImageUrl) == ".jpeg" ||
+                                     System.IO.Path.GetExtension(item.ImageUrl) == ".tiff" ||
+                                     System.IO.Path.GetExtension(item.ImageUrl) == ".gif")
+                                {
+                                    <div class="product__item__pic set-bg">
+                                        <img src="~/Styles/img/product/@item.ImageUrl">
+                                        <ul class="product__item__pic__hover">
+                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                            <li><a href="/Home/ProductDetail/@item.Id"><i class="fa fa-retweet"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                        </ul>
+                                    </div>
+                                }
                                 <div class="product__item__text">
-                                    <h6>@Html.DisplayFor(modelItem => item.Name)</h6>
+                                    <a href="/Home/ProductDetail/@item.Id"><h6>@Html.DisplayFor(modelItem => item.Name)</h6></a>
                                     <h5>
                                         $@Html.DisplayFor(modelItem => item.Price)
                                     </h5>

@@ -8,10 +8,9 @@ namespace ASM_CSharp4_Linhtnph20247.Configurations
     {
         public void Configure(EntityTypeBuilder<Cart> builder)
         {
-            builder.HasKey(p => p.Id);
+            builder.HasKey(p => p.UserId);
             builder.HasOne(p => p.User)
-                .WithMany(p => p.Carts)
-                .HasForeignKey(p => p.UserId);
+                .WithOne();
         }
     }
 }

@@ -30,8 +30,18 @@
                     @index
                 </td>
                 <td>
-                    <img src="~/@Html.DisplayFor(modelItem => product.ImageUrl)" style="height: 80px;">
-                </td>
+                @if (System.IO.Path.GetExtension(product.ImageUrl) == ".jpg" ||
+                     System.IO.Path.GetExtension(product.ImageUrl) == ".png" ||
+                     System.IO.Path.GetExtension(product.ImageUrl) == ".jpeg" ||
+                     System.IO.Path.GetExtension(product.ImageUrl) == ".tiff" ||
+                     System.IO.Path.GetExtension(product.ImageUrl) == ".gif")
+                {
+                    <img src="~/Styles/img/product/@product.ImageUrl" height="80px">
+                }
+                else
+                {
+                    <span>Lỗi ảnh</span>                       
+                }
                 <td>
                     @Html.DisplayFor(modelItem => product.Name)
                 </td>

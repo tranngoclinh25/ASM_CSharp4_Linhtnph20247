@@ -10,8 +10,15 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="product__details__pic">
                         <div class="product__details__pic__item">
+                        @if (System.IO.Path.GetExtension(@Model.Product.ImageUrl) == ".jpg" ||
+                             System.IO.Path.GetExtension(@Model.Product.ImageUrl) == ".png" ||
+                             System.IO.Path.GetExtension(@Model.Product.ImageUrl) == ".jpeg" ||
+                             System.IO.Path.GetExtension(@Model.Product.ImageUrl) == ".tiff" ||
+                             System.IO.Path.GetExtension(@Model.Product.ImageUrl) == ".gif")
+                        {
                             <img class="product__details__pic__item--large"
-                                 src="~/@Html.DisplayFor(model => model.Product.ImageUrl)">
+                                 src="~/Styles/img/product/@Model.Product.ImageUrl">
+                        }
                         </div>
                         <div class="product__details__pic__slider owl-carousel">
                             <img data-imgbigurl="~/Styles/img/product/details/product-details-2.jpg"
@@ -28,7 +35,7 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="product__details__text">
                         <h3>
-                            @Html.DisplayFor(model => model.Product.Name)
+                            @Model.Product.Name
                         </h3>
                         <div class="product__details__rating">
                             <i class="fa fa-star"></i>
@@ -39,24 +46,51 @@
                             <span>(18 reviews)</span>
                         </div>
                         <div class="product__details__price">
-                            $@Html.DisplayFor(model => model.Product.Price)
+                            @Model.Product.Price.ToString("C")
                         </div>
                         <p>
-                            @Html.DisplayFor(model => model.Product.Description)
+                            @Model.Product.Description
                         </p>
-                        <div class="product__details__quantity">
-                            <div class="quantity">
-                                <div class="pro-qty">
-                                    <input type="text" value="1">
+                        @if (@Model.Product.Quantity == 0)
+                        {
+                            <a href="/Home/Shop" class="primary-btn">CHOOSE OTHER PRODUCTS</a>
+                            <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+                            <p class="text-danger">Product is out of stock !</p>
+                        }
+                        else
+                        {
+                            <form method="post" asp-controller="Cart" asp-action="AddToCart">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="productId" value="@Model.Product.Id"/>
+                                <div class="product__details__quantity">
+                                    <div class="quantity">
+                                        <div class="pro-qty">
+                                            <input type="text" name="quantity" value="@Model.QuantityAddToCart">
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <a href="#" class="primary-btn">ADD TO CART</a>
-                        <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+                                <button type="submit" class="primary-btn">ADD TO CART</button>
+                                <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+                            </form>
+                        }
                         <ul>
-                            <li><b>Quantity in stock</b> <span>@Html.DisplayFor(model => model.Product.Quantity)</span></li>
-                            <li><b>Brand</b> <span>@Html.DisplayFor(model => model.Brand.Name)</span></li>
-                            <li><b>Size</b> <span>@Html.DisplayFor(model => model.Size.Name)</span></li>
+                            <li><b>Quantity in stock</b> <span>@Model.Product.Quantity</span></li>
+                            <li><b>Brand</b>
+                                <span>
+                                    @foreach (var brand in Model.Brands)
+                                    {
+                                        <button type="button" class="btn btn-light" value="@brand.Value">@brand.Text</button>
+                                    }
+                                </span>
+                            </li>       
+                            <li><b>Size</b>     
+                                <span>
+                                    @foreach (var size in Model.Sizes)
+                                    {
+                                        <button type="button" class="btn btn-light" value="@size.Value">@size.Text</button>
+                                    }
+                                </span>
+                            </li>
                             <li><b>Share on</b>
                                 <div class="share">
                                     <a href="#"><i class="fa fa-facebook"></i></a>

@@ -47,12 +47,9 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
             return View(viewModel);
         }
         [HttpPost]
-        public IActionResult Create(ProductViewModel model)
+        public IActionResult Create(ProductViewModel model, IFormFile imageFile)
         {
-            //// Kiểm tra xem thông tin sản phẩm mới có hợp lệ không
-            //if (ModelState.IsValid)
-            //{
-                var product = new Product()
+            var product = new Product()
                 {
                     Name = model.Name,
                     SizeId = model.SizeId,
@@ -63,12 +60,21 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
                     Quantity = model.Quantity,
                     Status = model.Status
                 };
-                if (_productService.CreateProduct(product))
+            if (imageFile != null && imageFile.Length > 0) //Không null và ko trống
+            {
+                //Trỏ tới thư mục wwwroot để lát nữa thực hiện Copy sang
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Styles/img/product", imageFile.FileName);
+                using (var stream = new FileStream(path, FileMode.Create))
                 {
-                    return RedirectToAction("Redirect");
+                    //Thức hiện Copy ảnh vừa chọn sang thư mục mới (wwwroot)
+                    imageFile.CopyTo(stream);
                 }
-
-                var brand = _brandService.GetBrandById(model.BrandId);
+                //Gán lại giá trị ImageUrl của đối tượng bằng file ảnh đã Copy
+                product.ImageUrl = imageFile.FileName;
+            }
+            if (_productService.CreateProduct(product))
+                    return RedirectToAction("Redirect");
+            var brand = _brandService.GetBrandById(model.BrandId);
                 model.BrandName = brand.Name;
                 model.Brands = _brandService.GetAllBrand().Select(b => new SelectListItem
                 {
@@ -82,11 +88,22 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
                     Value = s.Id.ToString(),
                     Text = s.Name
                 }).ToList();
-            //}
             return View(model);
         }
-        public IActionResult Edit(ProductViewModel model, Guid id)
+        public IActionResult Edit(ProductViewModel model, Guid id, IFormFile imageFile)
         {
+            if (imageFile != null && imageFile.Length > 0) //Không null và ko trống
+            {
+                //Trỏ tới thư mục wwwroot để lát nữa thực hiện Copy sang
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Styles/img/product", imageFile.FileName);
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    //Thức hiện Copy ảnh vừa chọn sang thư mục mới (wwwroot)
+                    imageFile.CopyTo(stream);
+                }
+                //Gán lại giá trị ImageUrl của đối tượng bằng file ảnh đã Copy
+                model.ImageUrl = imageFile.FileName;
+            }
             if (_productService.UpdateProduct(model, id))
             {
                 return RedirectToAction("Redirect");
@@ -107,8 +124,6 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
         public IActionResult Edit(Guid id)
         {
             Product product = _productService.GetProductById(id);
-            Brand brand = _brandService.GetBrandById(product.BrandId);
-            Size size = _sizeService.GetSizeById(product.SizeId);
             var viewModel = new ProductViewModel
             {
                 Product = product,
@@ -120,20 +135,20 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
                 Price = product.Price,
                 Quantity = product.Quantity,
                 Status = product.Status,
-                Brand = brand,
-                Size = size,
+                Brand = product.Brand,
+                Size = product.Size,
                 Sizes = _sizeService.GetAllSizes().Select(s => new SelectListItem
                 {
                     Value = s.Id.ToString(),
                     Text = s.Name
                 }).ToList(),
-                SizeName = size.Name,
+                SizeName = product.Size.Name,
                 Brands = _brandService.GetAllBrand().Select(b => new SelectListItem
                 {
                     Value = b.Id.ToString(),
                     Text = b.Name
                 }).ToList(),
-                BrandName = brand.Name,
+                BrandName = product.Brand.Name,
             };
             return View(viewModel);
         }
@@ -141,13 +156,11 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
         public IActionResult Details(Guid id)
         {
             Product product = _productService.GetProductById(id);
-            Brand brand = _brandService.GetBrandById(product.BrandId);
-            Size size = _sizeService.GetSizeById(product.SizeId);
             var viewModel = new ProductViewModel()
             {
                 Product = product,
-                Size = size,
-                Brand = brand
+                Size = product.Size,
+                Brand = product.Brand
             };
             return View(viewModel);
         }

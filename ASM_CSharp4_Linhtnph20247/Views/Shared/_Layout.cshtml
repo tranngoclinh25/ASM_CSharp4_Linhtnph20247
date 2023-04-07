@@ -37,9 +37,9 @@
         <ul>
             <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
             <li>
-                <a href="#">
+                <a href="/Cart/Cart">
                     <i class="fa fa-shopping-bag"></i>
-                    <span>@*@Model.Products.Count()*@</span>
+                    <span>@*@Model.CartDetails.Count()*@1</span>
                 </a>
             </li>
         </ul>
@@ -70,7 +70,7 @@
             <li><a href="#">Pages</a>
                 <ul class="header__menu__dropdown">
                     <li>
-                        <a asp-controller="CartDetail" asp-action="CartDetail">Shop Cart</a>
+                        <a asp-controller="Cart" asp-action="Cart">Shop Cart</a>
                     </li>
                     <li><a href="#">Check Out</a></li>
                     <li>
@@ -159,7 +159,7 @@
                         <li><a href="#">Pages</a>
                             <ul class="header__menu__dropdown">
                                 <li>
-                                    <a asp-controller="CartDetail" asp-action="CartDetail">Shop Cart</a>
+                                    <a asp-controller="Cart" asp-action="Cart">Shop Cart</a>
                                 </li>
                                 <li><a href="#">Check Out</a></li>
                                 <li>
@@ -181,9 +181,9 @@
                     <ul>
                         <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
                         <li>
-                            <a href="#">
+                            <a href="/Cart/Cart">
                                 <i class="fa fa-shopping-bag"></i>
-                                <span>@*@Model.Products.Count()*@</span>
+                                <span>@*@Model.CartDetails.Count()*@1</span>
                             </a>
                         </li>
                     </ul>

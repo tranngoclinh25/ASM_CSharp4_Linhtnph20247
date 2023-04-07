@@ -2,6 +2,7 @@
 using ASM_CSharp4_Linhtnph20247.Models;
 using ASM_CSharp4_Linhtnph20247.Services.IServices;
 using ASM_CSharp4_Linhtnph20247.ViewModel;
+using Microsoft.EntityFrameworkCore;
 
 namespace ASM_CSharp4_Linhtnph20247.Services
 {
@@ -15,12 +16,12 @@ namespace ASM_CSharp4_Linhtnph20247.Services
         }
         public List<Product> GetAllProduct()
         {
-            return _shopDbContext.Products.Where(p=>p.Status == 1).ToList(); // Lấy tất cả các sản phẩm
+            return _shopDbContext.Products.Include(p=>p.Brand).Include(p=>p.Size).Where(p=>p.Status == 1).ToList(); // Lấy tất cả các sản phẩm
         }
 
         public Product GetProductById(Guid id)
         {
-            return _shopDbContext.Products.FirstOrDefault(p => p.Id == id);
+            return _shopDbContext.Products.Include(p => p.Brand).Include(p => p.Size).FirstOrDefault(p => p.Id == id);
         }
 
         public List<Product> GetProductByName(string name)
@@ -66,7 +67,7 @@ namespace ASM_CSharp4_Linhtnph20247.Services
                     _shopDbContext.SaveChanges();
                     return true;
                 //}
-                return false;
+                //return false;
             }
             catch (Exception e)
             {

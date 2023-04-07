@@ -152,13 +152,24 @@
             @foreach (var item in Model.Products) {
             <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat">
                 <div class="featured__item">
-                    <div class="featured__item__pic set-bg" data-setbg="@Html.DisplayFor(modelItem => item.ImageUrl)">
-                        <ul class="featured__item__pic__hover">
-                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                        <li><a href="/Home/ProductDetail/@item.Id"><i class="fa fa-retweet"></i></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                        </ul>
-                    </div>
+                    @if (System.IO.Path.GetExtension(item.ImageUrl) == ".jpg" ||
+                         System.IO.Path.GetExtension(item.ImageUrl) == ".png" ||
+                         System.IO.Path.GetExtension(item.ImageUrl) == ".jpeg" ||
+                         System.IO.Path.GetExtension(item.ImageUrl) == ".tiff" ||
+                         System.IO.Path.GetExtension(item.ImageUrl) == ".gif")
+                    {
+                        <div class="featured__item__pic set-bg" data-setbg="Styles/img/product/@item.ImageUrl">
+                            <ul class="featured__item__pic__hover">
+                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                <li><a href="/Home/ProductDetail/@item.Id"><i class="fa fa-retweet"></i></a></li>
+                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                            </ul>
+                        </div>
+                    }
+                    else
+                    {
+                        <span>Lỗi ảnh</span>                       
+                    }
                     <div class="featured__item__text">
                         <h6>@Html.DisplayFor(modelItem => item.Name)</h6>
                         <h5>

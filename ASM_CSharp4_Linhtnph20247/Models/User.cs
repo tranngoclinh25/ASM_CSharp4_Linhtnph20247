@@ -14,6 +14,6 @@
         public int Status { get; set; }
         public virtual ICollection<RoleUser> RoleUsers { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
-        public virtual ICollection<Cart> Carts { get; set; }
+        //public virtual ICollection<Cart> Carts { get; set; }
     }
 }
