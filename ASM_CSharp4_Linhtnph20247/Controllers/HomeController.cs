@@ -37,7 +37,6 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
             viewModel.Products = _productService.GetAllProduct();
             return View("Shop", viewModel);
         }
-        [HttpGet]
         public IActionResult ProductDetail(Guid id)
         {
             Product product = _productService.GetProductById(id);
