@@ -387,7 +387,7 @@
                                 <div class="product__item__text">
                                     <a href="/Home/ProductDetail/@item.Id"><h6>@Html.DisplayFor(modelItem => item.Name)</h6></a>
                                     <h5>
-                                        $@Html.DisplayFor(modelItem => item.Price)
+                                        @item.Price.ToString("C")
                                     </h5>
                                 </div>
                             </div>

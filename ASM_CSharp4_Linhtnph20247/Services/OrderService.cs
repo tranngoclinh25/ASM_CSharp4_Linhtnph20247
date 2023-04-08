@@ -5,30 +5,32 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ASM_CSharp4_Linhtnph20247.Services
 {
-    public class CartService : ICartService
+    public class OrderService : IOrderService
     {
         ShopDbContext _shopDbContext;
 
-        public CartService()
+        public OrderService()
         {
             _shopDbContext = new ShopDbContext();
         }
-        public List<Cart> GetAllCart()
+
+        public List<Order> GetAllOrder()
         {
-            return _shopDbContext.Carts.ToList();
+            return _shopDbContext.Orders.Include(p=>p.User).ToList();
         }
 
-        public Cart GetCartById(Guid id)
+        public Order GetOrderById(Guid id)
         {
-            return _shopDbContext.Carts.FirstOrDefault(p => p.UserId == id);
+            return _shopDbContext.Orders.Include(p=>p.User).FirstOrDefault(p => p.Id == id);
         }
 
-        public bool CreateCart(Cart cart)
+        public bool CreateOrder(Order order)
         {
             try
             {
-                cart.CreatedAt = DateTime.Now;
-                _shopDbContext.Carts.Add(cart);
+                order.Id = Guid.NewGuid();
+                order.CreatedAt = DateTime.Now;
+                _shopDbContext.Orders.Add(order);
                 _shopDbContext.SaveChanges();
                 return true;
             }
@@ -38,17 +40,17 @@ namespace ASM_CSharp4_Linhtnph20247.Services
             }
         }
 
-        public bool UpdateCart(Cart cart)
+        public bool UpdateOrder(Order order)
         {
             return false;
         }
 
-        public bool DeleteCart(Guid id)
+        public bool DeleteOrder(Guid id)
         {
             try
             {
-                var cart = _shopDbContext.Carts.FirstOrDefault(p => p.UserId == id);
-                _shopDbContext.Carts.Remove(cart);
+                var order = _shopDbContext.Orders.FirstOrDefault(p => p.UserId == id);
+                _shopDbContext.Orders.Remove(order);
                 _shopDbContext.SaveChanges();
                 return true;
             }

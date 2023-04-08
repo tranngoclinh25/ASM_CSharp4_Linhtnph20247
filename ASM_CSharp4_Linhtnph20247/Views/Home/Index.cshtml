@@ -173,7 +173,7 @@
                     <div class="featured__item__text">
                         <h6>@Html.DisplayFor(modelItem => item.Name)</h6>
                         <h5>
-                            $@Html.DisplayFor(modelItem => item.Price)
+                            @item.Price.ToString("C")
                         </h5>
                     </div>
                 </div>

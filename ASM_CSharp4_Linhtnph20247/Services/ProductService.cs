@@ -51,9 +51,7 @@ namespace ASM_CSharp4_Linhtnph20247.Services
             try
             {
                 var p = _shopDbContext.Products.FirstOrDefault(p => p.Id == id);
-                //if (model.Price > p.Price)
-                //{
-                    p.Name = model.Name;
+                p.Name = model.Name;
                     p.BrandId = model.BrandId;
                     p.SizeId = model.SizeId;
                     p.Description = model.Description;
@@ -66,13 +64,19 @@ namespace ASM_CSharp4_Linhtnph20247.Services
                     _shopDbContext.Products.Update(p);
                     _shopDbContext.SaveChanges();
                     return true;
-                //}
-                //return false;
             }
             catch (Exception e)
             {
                 return false;
             }
+        }   
+
+        public void UpdateProductQuantity(Product product)
+        {
+            var p = _shopDbContext.Products.FirstOrDefault(p => p.Id == product.Id);
+            p.Quantity = product.Quantity;
+            _shopDbContext.Products.Update(p);
+            _shopDbContext.SaveChanges();
         }
 
         public bool DeleteProduct(Guid id)

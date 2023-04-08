@@ -6,7 +6,6 @@ namespace ASM_CSharp4_Linhtnph20247.Services.IServices
     {
         public List<Cart> GetAllCart();
         public Cart GetCartById(Guid id);
-        public List<Cart> GetCartByName(string name);
         public bool CreateCart(Cart cart);
         public bool UpdateCart(Cart cart);  
         public bool DeleteCart(Guid id);

@@ -15,13 +15,15 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
         private readonly IProductService _productService;
         private readonly ISizeService _sizeService;
         private readonly IBrandService _brandService;
-
+        private readonly ICartDetailService _cartDetailService;
+            
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
             _productService = new ProductService();
             _sizeService = new SizeService();
             _brandService = new BrandService();
+            _cartDetailService = new CartDetailService();
         }
 
         public IActionResult Index()
@@ -37,6 +39,7 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
             viewModel.Products = _productService.GetAllProduct();
             return View("Shop", viewModel);
         }
+        [HttpGet]
         public IActionResult ProductDetail(Guid id)
         {
             Product product = _productService.GetProductById(id);
@@ -74,6 +77,19 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
         public IActionResult BlogDetail()
         {
             return View("BlogDetail");
+        }
+
+        public IActionResult CheckOut()
+        {
+            //var cart = _context.Carts.FirstOrDefault(c => c.UserId == currentUserId); //Phân quyền: Lấy thông tin giỏ hàng của người dùng hiện tại
+            var cartDetails = _cartDetailService.GetAllCartDetail()/*.Where(cd => cd.CartId == cart.Id)*/;
+            float totalAmount = 0;
+            foreach (var cartDetail in cartDetails)
+            {
+                totalAmount += cartDetail.Product.Price * cartDetail.Quantity;
+            }
+            var cartViewModel = new CartViewModel { CartDetails = cartDetails, TotalAmount = totalAmount };
+            return View("CheckOut", cartViewModel);
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

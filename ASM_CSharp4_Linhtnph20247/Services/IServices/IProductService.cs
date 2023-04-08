@@ -10,6 +10,7 @@ namespace ASM_CSharp4_Linhtnph20247.Services.IServices
         public List<Product> GetProductByName(string name);
         public bool CreateProduct(Product product);
         public bool UpdateProduct(ProductViewModel model, Guid id);
+        public void UpdateProductQuantity(Product product);
         public bool DeleteProduct(Guid id);
-    }
+    }   
 }

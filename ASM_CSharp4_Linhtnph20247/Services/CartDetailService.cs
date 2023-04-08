@@ -23,13 +23,6 @@ namespace ASM_CSharp4_Linhtnph20247.Services
             return _shopDbContext.CartDetails.Include(cd=>cd.Product).Include(cd=>cd.Cart).FirstOrDefault(p => p.Id == id);
         }
 
-        public List<CartDetail> GetCartDetailByName(string name)
-        {
-            //return _shopDbContext.CartDetails.Where(p => p.Name.Contains(name)).ToList();
-            //Trả về danh sách những Sản Phẩm mà tên có chứa chuỗi cần tìm
-            return null;
-        }
-
         public bool CreateCartDetail(CartDetail cartDetail)
         {
             try
@@ -52,6 +45,7 @@ namespace ASM_CSharp4_Linhtnph20247.Services
                 var cd = _shopDbContext.CartDetails.FirstOrDefault(p => p.Id == cartDetail.Id);
                 cd.Product = cartDetail.Product;
                 cd.ProductId = cartDetail.ProductId;
+                cd.Cart = cartDetail.Cart;
                 cd.CartId = cartDetail.CartId;
                 cd.Quantity = cartDetail.Quantity;
                 _shopDbContext.CartDetails.Update(cd);

@@ -25,7 +25,7 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
         }
         public IActionResult Cart()
         {
-            //var cart = _context.Carts.FirstOrDefault(c => c.UserId == currentUserId); //Phân quyền: Lấy thông tin giỏ hàng của người dùng hiện tại
+            ////var cart =_cartService.GetCartById(currentUserId); //Phân quyền: Lấy thông tin giỏ hàng của người dùng hiện tại
             var cartDetails = _cartDetailService.GetAllCartDetail()/*.Where(cd => cd.CartId == cart.Id)*/;
             float totalAmount = 0;
             foreach (var cartDetail in cartDetails)
@@ -71,7 +71,7 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
                 cartDetail = new CartDetail
                 {
                     ProductId = productId,
-                    //CartId = cart.Id; //Chưa xác định được giỏ hàng của người dùng
+                    //CartId = cart.Id; //Chưa xác định được giỏ hàng của người dùng hiện tại đang Login
                     CartId = Guid.Parse("48632772-2D15-4EA2-A863-32E317E4A3D5"),
                     Quantity = quantity
                 };
@@ -86,6 +86,26 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
 
             }
             return RedirectToAction("ProductDetail", "Home");
+        }
+
+        public IActionResult UpdateQuantity(CartViewModel model)
+        {
+            foreach (var cartDetail in model.CartDetails)
+            {
+                var cd = _cartDetailService.GetCartDetailById(cartDetail.Id);
+                cd.Quantity = cartDetail.Quantity;
+                if (_cartDetailService.UpdateCartDetail(cd) == false)
+                    return HttpNotFound();
+            }
+            return RedirectToAction("Cart");
+        }
+        public IActionResult Delete(Guid id)
+        {
+            if (_cartDetailService.DeleteCartDetail(id))
+            {
+                return RedirectToAction("Cart");
+            }
+            return HttpNotFound();
         }
         private ActionResult HttpNotFound()
         {
