@@ -4,6 +4,7 @@ using ASM_CSharp4_Linhtnph20247.Services;
 using ASM_CSharp4_Linhtnph20247.Services.IServices;
 using ASM_CSharp4_Linhtnph20247.ViewModel;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
@@ -11,16 +12,16 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
 {
     public class CartController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<CartController> _logger;
         private readonly IProductService _productService;
         private readonly ICartService _cartService; 
         private readonly ICartDetailService _cartDetailService;
 
-        public CartController(ILogger<HomeController> logger)
+        public CartController(ILogger<CartController> logger)
         {
             _logger = logger;
             _productService = new ProductService();
-            _cartService = new CartService();
+            _cartService = new CartService();   
             _cartDetailService = new CartDetailService();
         }
         public IActionResult Cart()
@@ -33,6 +34,7 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
                 totalAmount += cartDetail.Product.Price * cartDetail.Quantity;
             }
             var cartViewModel = new CartViewModel { CartDetails = cartDetails, TotalAmount = totalAmount};
+            ViewData["CartItem"] = cartDetails.Count;
             return View(cartViewModel);
         }
         [HttpPost]
@@ -101,9 +103,71 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
         }
         public IActionResult Delete(Guid id)
         {
+            var cartDetail = _cartDetailService.GetCartDetailById(id); // Lấy ra sản phẩm trong giỏ hàng mà user định xóa
+            var cartDetails = SessionService.GetObjFromSession(HttpContext.Session, "Delete"); //Lấy dữ liệu từ Session
+            if (cartDetails.Count == 0)
+            {
+                cartDetails.Add(cartDetail);
+                SessionService.SetObjToJson(HttpContext.Session, "Delete", cartDetails);
+            }
+            else
+            {
+                if (SessionService.CheckProductInCart(cartDetail.ProductId, cartDetails))
+                {
+                    var check = cartDetails.FirstOrDefault(p => p.ProductId == cartDetail.ProductId);
+                    cartDetails.Remove(check);
+                    cartDetail.Quantity += check.Quantity;
+                    cartDetails.Add(cartDetail);
+                    SessionService.SetObjToJson(HttpContext.Session, "Delete", cartDetails);
+                }
+                else
+                {
+                    cartDetails.Add(cartDetail);
+                    SessionService.SetObjToJson(HttpContext.Session, "Delete", cartDetails);
+                }
+            }
+
             if (_cartDetailService.DeleteCartDetail(id))
             {
                 return RedirectToAction("Cart");
+            }
+            return HttpNotFound();
+        }
+        public IActionResult ShowDelete()
+        {
+            var cartDetails = SessionService.GetObjFromSession(HttpContext.Session, "Delete");
+            float totalAmount = 0;
+            foreach (var cartDetail in cartDetails)
+            {
+                totalAmount += cartDetail.Product.Price * cartDetail.Quantity;
+            }
+            var cartViewModel = new CartViewModel { CartDetails = cartDetails, TotalAmount = totalAmount };
+            return View("ShowDelete" ,cartViewModel);
+        }
+        [HttpPost]
+        public IActionResult RollBack(Guid id) 
+        {
+            var cartDetails = SessionService.GetObjFromSession(HttpContext.Session, "Delete");
+            var cartDetail = cartDetails.FirstOrDefault(p => p.Id == id);
+            var cartDetailProduct = _cartDetailService.GetAllCartDetail().FirstOrDefault(p => p.ProductId == cartDetail.ProductId);
+            if (cartDetailProduct == null)
+            {
+                cartDetailProduct = new CartDetail
+                {
+                    ProductId = cartDetail.ProductId,
+                    CartId = cartDetail.CartId,
+                    Quantity = cartDetail.Quantity,
+                };
+                if (_cartDetailService.CreateCartDetail(cartDetailProduct))
+                {
+                    return RedirectToAction("Cart");
+                }
+            }
+            else
+            {
+                cartDetailProduct.Quantity += cartDetail.Quantity;
+                if (_cartDetailService.UpdateCartDetail(cartDetailProduct))
+                    return RedirectToAction("Cart");
             }
             return HttpNotFound();
         }

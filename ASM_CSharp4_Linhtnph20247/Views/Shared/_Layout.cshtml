@@ -40,7 +40,7 @@
             <li>
                 <a href="/Cart/Cart">
                     <i class="fa fa-shopping-bag"></i>
-                    <span>@*@Model.CartDetails.Count()*@1</span>
+                    <span>@*@TempData["CartItem"]*@1</span>
                 </a>
             </li>
         </ul>
@@ -194,7 +194,7 @@
                         <li>
                             <a href="/Cart/Cart">
                                 <i class="fa fa-shopping-bag"></i>
-                                <span>@*@Model.CartDetails.Count()*@1</span>
+                                <span>@*@TempData["CartItem"]*@1</span>
                             </a>
                         </li>
                     </ul>

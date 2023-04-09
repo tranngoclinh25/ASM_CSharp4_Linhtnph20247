@@ -14,7 +14,6 @@ namespace ASM_CSharp4_Linhtnph20247.ViewModel
         public string Description { get; set; }
         public float Price { get; set; }
         public int Quantity { get; set; }
-        public DateTime CreatedAt { get; set; }
         public string ImageUrl { get; set; }
         public int Status { get; set; }
         //Brand

@@ -16,7 +16,7 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
         private readonly ISizeService _sizeService;
         private readonly IBrandService _brandService;
         private readonly ICartDetailService _cartDetailService;
-            
+
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;

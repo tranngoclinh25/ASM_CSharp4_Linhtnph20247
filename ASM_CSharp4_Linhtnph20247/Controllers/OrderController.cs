@@ -11,13 +11,13 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
 {
     public class OrderController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<OrderController> _logger;
         private readonly IProductService _productService;
         private readonly IOrderService _orderService;
         private readonly IOrderDetailService _orderDetailService;
         private readonly ICartDetailService _cartDetailService;
 
-        public OrderController(ILogger<HomeController> logger)
+        public OrderController(ILogger<OrderController> logger)     
         {
             _logger = logger;
             _productService = new ProductService();
@@ -61,8 +61,7 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
                     message += item.Name + ", ";
                 }
                 message = message.Substring(0, message.Length - 2);
-                //_logger.LogInformation(message);
-                _logger.LogError(message);
+                TempData["ErrorMessage"] = message;
                 return RedirectToAction("CheckOut", "Home",new { message });
             }
             else

@@ -1,0 +1,67 @@
+﻿@model ASM_CSharp4_Linhtnph20247.ViewModel.CartViewModel
+@{
+    ViewData["Title"] = "ShowDelete";
+}
+<!-- Shoping Cart Section Begin -->
+<section class="shoping-cart spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shoping__cart__table">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th class="shoping__product">Products</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var cartDetail in Model.CartDetails)
+                        {
+                            <tr>
+                                <td class="shoping__cart__item">
+                                    @if (System.IO.Path.GetExtension(cartDetail.Product.ImageUrl) == ".jpg" ||
+                                         System.IO.Path.GetExtension(cartDetail.Product.ImageUrl) == ".png" ||
+                                         System.IO.Path.GetExtension(cartDetail.Product.ImageUrl) == ".jpeg" ||
+                                         System.IO.Path.GetExtension(cartDetail.Product.ImageUrl) == ".tiff" ||
+                                         System.IO.Path.GetExtension(cartDetail.Product.ImageUrl) == ".gif")
+                                    {
+                                        <img src="~/Styles/img/product/@cartDetail.Product.ImageUrl" height="100px">
+                                    }
+                                    <h5>@cartDetail.Product.Name</h5>
+                                </td>
+                                <td class="shoping__cart__price">
+                                    @cartDetail.Product.Price.ToString("C")
+                                </td>
+                                <td class="shoping__cart__quantity">
+                                    <div class="quantity">
+                                        <div class="pro-qty">
+                                            <input disabled type="text" value="@cartDetail.Quantity"/>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="shoping__cart__total">
+                                    @((cartDetail.Product.Price * cartDetail.Quantity).ToString("C"))
+                                </td>
+                                <td>
+                                    <form asp-action="RollBack">
+                                    <input type="hidden" name="id" value="@cartDetail.Id"/>
+                                    <button type="submit" class="btn primary-btn">
+                                        Roll Back
+                                    </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    <!-- Shoping Cart Section End -->
+
