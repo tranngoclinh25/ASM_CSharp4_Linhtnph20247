@@ -34,7 +34,7 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
                 totalAmount += cartDetail.Product.Price * cartDetail.Quantity;
             }
             var cartViewModel = new CartViewModel { CartDetails = cartDetails, TotalAmount = totalAmount};
-            ViewData["CartItem"] = cartDetails.Count;
+            TempData["CartItem"] = cartDetails.Count;
             return View(cartViewModel);
         }
         [HttpPost]
@@ -129,7 +129,9 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
 
             if (_cartDetailService.DeleteCartDetail(id))
             {
-                return RedirectToAction("Cart");
+                var delete = "The product that you have removed in the cart is only valid for 60 seconds!";
+                TempData["Delete"] = delete;
+                return RedirectToAction("Cart", new { delete });
             }
             return HttpNotFound();
         }
@@ -160,6 +162,9 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
                 };
                 if (_cartDetailService.CreateCartDetail(cartDetailProduct))
                 {
+                    var check = cartDetails.FirstOrDefault(p => p.ProductId == cartDetail.ProductId);
+                    cartDetails.Remove(check);
+                    SessionService.SetObjToJson(HttpContext.Session, "Delete", cartDetails);
                     return RedirectToAction("Cart");
                 }
             }
@@ -167,7 +172,12 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
             {
                 cartDetailProduct.Quantity += cartDetail.Quantity;
                 if (_cartDetailService.UpdateCartDetail(cartDetailProduct))
+                {
+                    var check = cartDetails.FirstOrDefault(p => p.ProductId == cartDetail.ProductId);
+                    cartDetails.Remove(check);
+                    SessionService.SetObjToJson(HttpContext.Session, "Delete", cartDetails);
                     return RedirectToAction("Cart");
+                }
             }
             return HttpNotFound();
         }

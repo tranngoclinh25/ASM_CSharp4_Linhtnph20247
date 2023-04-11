@@ -39,8 +39,7 @@
             <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
             <li>
                 <a href="/Cart/Cart">
-                    <i class="fa fa-shopping-bag"></i>
-                    <span>@*@TempData["CartItem"]*@1</span>
+                    <span>@TempData["CartItem"]</span>
                 </a>
             </li>
         </ul>
@@ -194,7 +193,7 @@
                         <li>
                             <a href="/Cart/Cart">
                                 <i class="fa fa-shopping-bag"></i>
-                                <span>@*@TempData["CartItem"]*@1</span>
+                                <span>@TempData["CartItem"]</span>
                             </a>
                         </li>
                     </ul>

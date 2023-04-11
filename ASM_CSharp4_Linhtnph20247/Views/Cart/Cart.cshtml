@@ -10,7 +10,10 @@
                 <a class="text-decoration-none text-white" asp-action="ShowDelete">Show Deleted</a>
             </button>
         </div> <br/>
-        <div class="alert alert-danger">The product that you have removed in the cart is only valid for 60 seconds!</div>
+        @if (TempData["Delete"] != null)
+        {
+            <div class="alert alert-danger">@TempData["Delete"]</div>
+        }
         <form asp-action="UpdateQuantity">
             <div class="row">
                 <div class="col-lg-12">
