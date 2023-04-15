@@ -30,12 +30,26 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
         {
             //var order = _orderService.GetOrderById(currentUserId); //Phân quyền: Lấy thông tin hóa đơn của người dùng hiện tại đang Login
             var orderDetails = _orderDetailService.GetAllOrderDetail()/*.Where(od => od.OrderId == order.Id)*/;
+            var order = _orderService.GetAllOrder();
             float totalPrice = 0;
             foreach (var orderDetail in orderDetails)
             {
                 totalPrice += orderDetail.Product.Price * orderDetail.Quantity;
             }
-            var orderViewModel = new OrderViewModel() { OrderDetails = orderDetails, TotalPrice = totalPrice };
+            var orderViewModel = new OrderViewModel() { OrderDetails = orderDetails, Orders = order, TotalPrice = totalPrice };
+            return View(orderViewModel);
+        }
+        public IActionResult OrderDetail(Guid id)
+        {   
+            //var order = _orderService.GetOrderById(currentUserId); //Phân quyền: Lấy thông tin hóa đơn của người dùng hiện tại đang Login
+            var orderDetails = _orderDetailService.GetAllOrderDetail().Where(p=>p.OrderId == id).ToList()/*.Where(od => od.OrderId == order.Id)*/;
+            var order = _orderService.GetAllOrder();
+            float totalPrice = 0;
+            foreach (var orderDetail in orderDetails)
+            {
+                totalPrice += orderDetail.Product.Price * orderDetail.Quantity;
+            }
+            var orderViewModel = new OrderViewModel() { OrderDetails = orderDetails, Orders = order, TotalPrice = totalPrice };
             return View(orderViewModel);
         }
         [HttpPost]

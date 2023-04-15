@@ -1,6 +1,6 @@
 ﻿@model ASM_CSharp4_Linhtnph20247.ViewModel.OrderViewModel
 @{
-    ViewData["Title"] = "Order Detail";
+    ViewData["Title"] = "Order";
 }
     <!-- Shoping Cart Section Begin -->
 <section class="shoping-cart spad">
@@ -11,61 +11,46 @@
                         <table>
                             <thead>
                             <tr>
-                                <th>Products</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Total</th>
+                                <th>User</th>
+                                <th>PhoneNumber</th>
+                                <th>Address</th>
                                 <th>Order date</th>
                                 <th>Method Payment</th>
+                                <th>Total</th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach (var orderDetail in Model.OrderDetails.OrderByDescending(p=>p.Order.CreatedAt))
+                            @foreach (var order in @Model.Orders.OrderByDescending(p=>p.CreatedAt))
                             {
                                 <tr>
                                     <td>
-                                        @if (System.IO.Path.GetExtension(orderDetail.Product.ImageUrl) == ".jpg" ||
-                                             System.IO.Path.GetExtension(orderDetail.Product.ImageUrl) == ".png" ||
-                                             System.IO.Path.GetExtension(orderDetail.Product.ImageUrl) == ".jpeg" ||
-                                             System.IO.Path.GetExtension(orderDetail.Product.ImageUrl) == ".tiff" ||
-                                             System.IO.Path.GetExtension(orderDetail.Product.ImageUrl) == ".gif")
-                                        {
-                                            <img src="~/Styles/img/product/@orderDetail.Product.ImageUrl" height="100px">
-                                        }
-                                        <h5>@orderDetail.Product.Name</h5>
+                                        @order.User.FullName
                                     </td>
                                     <td>
-                                        @orderDetail.Product.Price.ToString("C")
+                                        @order.User.PhoneNumber
                                     </td>
                                     <td>
-                                        @orderDetail.Quantity
+                                        @order.User.Address
                                     </td>
                                     <td>
-                                        @((orderDetail.Product.Price * orderDetail.Quantity).ToString("C"))
+                                        @order.CreatedAt
                                     </td>
                                     <td>
-                                        @orderDetail.Order.CreatedAt
+                                       @order.PaymentMethod
                                     </td>
                                     <td>
-                                        @orderDetail.Order.PaymentMethod
+                                        @order.TotalPrice
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-success">
+                                            <a class="text-decoration-none text-white" href="/Order/OrderDetail/@order.Id">Detail</a>
+                                        </button>
                                     </td>
                                 </tr>
                             }
                             </tbody>
                         </table>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-6"></div>
-                <div class="col-lg-6">
-                    <div class="shoping__checkout">
-                        <h5>Order Total</h5>
-                        <ul>
-                            <li>Subtotal <span>$0</span></li>
-                            <li>Total <span>@Model.TotalPrice.ToString("C")</span></li>
-                        </ul>
-                        <a href="#" class="primary-btn">Code mờ cả mắt !!!</a>
                     </div>
                 </div>
             </div>
