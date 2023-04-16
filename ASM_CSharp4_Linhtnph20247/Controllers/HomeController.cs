@@ -28,9 +28,7 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
 
         public IActionResult Index()
         {
-            var viewModel = new ProductViewModel();
-            viewModel.Products = _productService.GetAllProduct();
-            return View("Index", viewModel);
+            return View("Index");
         }
 
         public IActionResult Shop()
@@ -90,6 +88,17 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
             }
             var cartViewModel = new CartViewModel { CartDetails = cartDetails, TotalAmount = totalAmount };
             return View("CheckOut", cartViewModel);
+        }
+
+        public IActionResult Search(string search)
+        {
+            if (string.IsNullOrEmpty(search))
+            {
+                return RedirectToAction("Shop");
+            }
+            var check = _productService.GetProductByName(search);
+            var viewModel = new ProductViewModel(){ Products = check};
+            return View("Shop", viewModel);
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

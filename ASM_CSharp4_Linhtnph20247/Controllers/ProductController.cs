@@ -72,6 +72,16 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
                 //Gán lại giá trị ImageUrl của đối tượng bằng file ảnh đã Copy
                 product.ImageUrl = imageFile.FileName;
             }
+            var products = _productService.GetAllProduct();
+            foreach (var item in products)
+            {
+                if (item.Name == model.Name && item.BrandId == model.BrandId)
+                {
+                    var thongbao = "(Name + Brand) already exists!";
+                    TempData["ThongBao"] = thongbao;
+                    return RedirectToAction("Create", new { thongbao });
+                }
+            }
             if (_productService.CreateProduct(product))
                     return RedirectToAction("Redirect");
             var brand = _brandService.GetBrandById(model.BrandId);

@@ -42,9 +42,18 @@
                 {
                     <span>Lỗi ảnh</span>                       
                 }
-                <td>
-                    @Html.DisplayFor(modelItem => product.Name)
-                </td>
+                @if (product.Price * product.Quantity > 4000)
+                {
+                    <td>
+                        <a class="text-danger">@Html.DisplayFor(modelItem => product.Name)</a>
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => product.Name)
+                    </td>
+                }
                 <td>
                     @Html.DisplayFor(modelItem => product.Price)
                 </td>
