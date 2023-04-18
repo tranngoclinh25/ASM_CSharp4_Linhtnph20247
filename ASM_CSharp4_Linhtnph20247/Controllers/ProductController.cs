@@ -118,16 +118,7 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
             {
                 return RedirectToAction("Redirect");
             }
-            model.Brands = _brandService.GetAllBrand().Select(b => new SelectListItem
-            {
-                Value = b.Id.ToString(),
-                Text = b.Name
-            }).ToList();
-            model.Sizes = _sizeService.GetAllSizes().Select(s => new SelectListItem
-            {
-                Value = s.Id.ToString(),
-                Text = s.Name
-            }).ToList();
+            }
             return View(model);
         }
         [HttpGet]
