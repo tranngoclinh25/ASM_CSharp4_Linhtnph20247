@@ -78,7 +78,7 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
                 if (item.Name == model.Name && item.BrandId == model.BrandId)
                 {
                     var thongbao = "(Name + Brand) already exists!";
-                    TempData["ThongBao"] = thongbao;
+                    TempData["ThongBaoCreate"] = thongbao;
                     return RedirectToAction("Create", new { thongbao });
                 }
             }
@@ -114,11 +114,38 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
                 //Gán lại giá trị ImageUrl của đối tượng bằng file ảnh đã Copy
                 model.ImageUrl = imageFile.FileName;
             }
+            else
+            {
+                model.ImageUrl = _productService.GetProductById(id).ImageUrl;
+            }
+            //var product = _productService.GetProductById(id);
+            //if (product.Name != model.Name || product.BrandId != model.BrandId)
+            //{
+            //    var products = _productService.GetAllProduct();
+            //    foreach (var item in products)
+            //    {
+            //        if (item.Name == model.Name && item.BrandId == model.BrandId)
+            //        {
+            //            var thongbao = "(Name + Brand) already exists!";
+            //            TempData["ThongBaoUpdate"] = thongbao;
+            //            return RedirectToAction("Edit", new { thongbao });
+            //        }
+            //    }
+            //}
             if (_productService.UpdateProduct(model, id))
             {
                 return RedirectToAction("Redirect");
             }
-            }
+            model.Brands = _brandService.GetAllBrand().Select(b => new SelectListItem
+            {
+                Value = b.Id.ToString(),
+                Text = b.Name
+            }).ToList();
+            model.Sizes = _sizeService.GetAllSizes().Select(s => new SelectListItem
+            {
+                Value = s.Id.ToString(),
+                Text = s.Name
+            }).ToList();
             return View(model);
         }
         [HttpGet]

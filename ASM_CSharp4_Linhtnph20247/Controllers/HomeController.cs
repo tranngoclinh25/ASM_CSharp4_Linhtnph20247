@@ -6,6 +6,7 @@ using ASM_CSharp4_Linhtnph20247.Services;
 using ASM_CSharp4_Linhtnph20247.Services.IServices;
 using ASM_CSharp4_Linhtnph20247.ViewModel;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Text.RegularExpressions;
 
 namespace ASM_CSharp4_Linhtnph20247.Controllers
 {
@@ -16,6 +17,7 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
         private readonly ISizeService _sizeService;
         private readonly IBrandService _brandService;
         private readonly ICartDetailService _cartDetailService;
+        private readonly IUserService _userService;
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -24,6 +26,7 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
             _sizeService = new SizeService();
             _brandService = new BrandService();
             _cartDetailService = new CartDetailService();
+            _userService = new UserService();
         }
 
         public IActionResult Index()
@@ -77,6 +80,38 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
             return View("BlogDetail");
         }
 
+        public IActionResult Signin()
+        {
+            return View("Signin");
+        }
+
+        public IActionResult Login(string user, string pass)
+        {
+            if (/*user.Length <= 6 || */Regex.IsMatch(user, @"[!@#$%^&*()_+{}\[\]:;""',.<>/?\\|~-]"))
+            {
+                var thongbao = "UserName must be longer than 6 characters and contains no special characters";
+                TempData["User"] = thongbao;
+                return RedirectToAction("Login", new { thongbao });
+            }
+            if (pass.Length <= 6 || Regex.IsMatch(pass, @"[!@#$%^&*()_+{}\[\]:;""',.<>/?\\|~-]"))
+            {
+                var thongbao = "Password must be longer than 6 characters and contains no special characters";
+                TempData["Pass"] = thongbao;
+                return RedirectToAction("Login", new { thongbao });
+            }
+
+            var users = _userService.GetAllUsers();
+            foreach (var item in users)
+            {
+                if (user == item.UserName && pass == item.Password)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+            var tb = "Username or password incorrect";
+            TempData["UserPass"] = tb;
+            return RedirectToAction("Login", new { tb });
+        }
         public IActionResult CheckOut()
         {
             //var cart = _context.Carts.FirstOrDefault(c => c.UserId == currentUserId); //Phân quyền: Lấy thông tin giỏ hàng của người dùng hiện tại
