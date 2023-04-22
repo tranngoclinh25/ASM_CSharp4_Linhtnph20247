@@ -4,56 +4,86 @@
 }
     <!-- Shoping Cart Section Begin -->
 <section class="shoping-cart spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="shoping__cart__table">
-                        <table>
-                            <thead>
+    <div class="container">
+        <div class="featured__controls">
+            <ul>
+                <li data-filter="All" class="active">All</li>
+                <li data-filter="0">Wait For Pay</li>
+                <li data-filter="1">Transport</li>
+                <li data-filter="2">Delivering</li>
+                <li data-filter="3">Complete</li>
+                <li data-filter="4">Cancelled</li>
+                <li data-filter="5">Return/Refund</li>
+            </ul>
+        </div>
+        <script>
+            $(document).ready(function () {
+              $('.featured__controls li').click(function () {
+                var filter = $(this).text();
+            
+                $.ajax({
+                  url: '/Order/Order',
+                  type: 'GET',
+                  data: { filter: filter },
+                  success: function (result) {
+                    $('.shoping__cart__table').html(result);
+                  },
+                  error: function (xhr, status, error) {
+                    console.log(xhr.responseText);
+                  }
+                });
+              });
+            });
+        </script>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shoping__cart__table">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>PhoneNumber</th>
+                            <th>Address</th>
+                            <th>Order date</th>
+                            <th>Status</th>
+                            <th>Total</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var order in @Model.Orders.OrderByDescending(p => p.CreatedAt))
+                        {
                             <tr>
-                                <th>User</th>
-                                <th>PhoneNumber</th>
-                                <th>Address</th>
-                                <th>Order date</th>
-                                <th>Method Payment</th>
-                                <th>Total</th>
-                                <th></th>
+                                <td>
+                                    @order.User.FullName
+                                </td>
+                                <td>
+                                    @order.User.PhoneNumber
+                                </td>
+                                <td>
+                                    @order.User.Address
+                                </td>
+                                <td>
+                                    @order.CreatedAt
+                                </td>
+                                <td>
+                                    @(order.Status == 0 ? "Wait For Pay" : order.Status == 1 ? "Transport" : order.Status == 2 ? "Delivering" : order.Status == 3 ? "Complete" : order.Status == 4 ? "Cancelled" : "Return/Refund")
+                                </td>
+                                <td>
+                                    @order.TotalPrice
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-success">
+                                        <a class="text-decoration-none text-white" href="/Order/OrderDetail/@order.Id">Detail</a>
+                                    </button>
+                                </td>
                             </tr>
-                            </thead>
-                            <tbody>
-                            @foreach (var order in @Model.Orders.OrderByDescending(p=>p.CreatedAt))
-                            {
-                                <tr>
-                                    <td>
-                                        @order.User.FullName
-                                    </td>
-                                    <td>
-                                        @order.User.PhoneNumber
-                                    </td>
-                                    <td>
-                                        @order.User.Address
-                                    </td>
-                                    <td>
-                                        @order.CreatedAt
-                                    </td>
-                                    <td>
-                                       @order.PaymentMethod
-                                    </td>
-                                    <td>
-                                        @order.TotalPrice
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-success">
-                                            <a class="text-decoration-none text-white" href="/Order/OrderDetail/@order.Id">Detail</a>
-                                        </button>
-                                    </td>
-                                </tr>
-                            }
-                            </tbody>
-                        </table>
-                    </div>
+                        }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
+    </div>
 </section>
     <!-- Shoping Cart Section End -->

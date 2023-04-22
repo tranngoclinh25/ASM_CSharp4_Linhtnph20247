@@ -31,13 +31,30 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
 
         public IActionResult Index()
         {
-            return View("Index");
+            var viewModel = new ProductViewModel();
+            viewModel.Products = _productService.GetAllProduct().Take(8).ToList();
+            TempData["CartItem"] = _cartDetailService.GetAllCartDetail().Count;
+            var username = HttpContext.Session.GetString("UserLoginSession");
+            TempData["UserLogin"] = username;
+            return View("Index", viewModel);
         }
-
         public IActionResult Shop()
         {
             var viewModel = new ProductViewModel();
             viewModel.Products = _productService.GetAllProduct();
+            TempData["CartItem"] = _cartDetailService.GetAllCartDetail().Count;
+            var username = HttpContext.Session.GetString("UserLoginSession");
+            TempData["UserLogin"] = username;
+            return View("Shop", viewModel);
+        }
+        public IActionResult Search(string search)
+        {
+            if (string.IsNullOrEmpty(search))
+            {
+                return RedirectToAction("Shop");
+            }
+            var check = _productService.GetProductByName(search);
+            var viewModel = new ProductViewModel() { Products = check };
             return View("Shop", viewModel);
         }
         [HttpGet]
@@ -47,8 +64,6 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
             var viewModel = new ProductViewModel()
             {
                 Product = product,
-                Brand = product.Brand,
-                Size = product.Size,
                 Sizes = _sizeService.GetAllSizes().Select(s => new SelectListItem
                 {
                     Value = s.Id.ToString(),
@@ -63,41 +78,62 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
                 BrandName = product.Brand.Name,
                 QuantityAddToCart = 1
             };
+            TempData["CartItem"] = _cartDetailService.GetAllCartDetail().Count;
+            var username = HttpContext.Session.GetString("UserLoginSession");
+            TempData["UserLogin"] = username;
             return View("ProductDetail", viewModel);
         }
 
         public IActionResult Contact()
         {
+            TempData["CartItem"] = _cartDetailService.GetAllCartDetail().Count;
+            var username = HttpContext.Session.GetString("UserLoginSession");
+            TempData["UserLogin"] = username;
             return View("Contact");
         }
 
         public IActionResult Blog()
         {
+            TempData["CartItem"] = _cartDetailService.GetAllCartDetail().Count;
+            var username = HttpContext.Session.GetString("UserLoginSession");
+            TempData["UserLogin"] = username;
             return View("Blog");
         }
         public IActionResult BlogDetail()
         {
+            TempData["CartItem"] = _cartDetailService.GetAllCartDetail().Count;
+            var username = HttpContext.Session.GetString("UserLoginSession");
+            TempData["UserLogin"] = username;
             return View("BlogDetail");
         }
-
+        public IActionResult Logout()
+        {
+            //var username = "";
+            //HttpContext.Session.SetString("UserLoginSession", username);
+            //TempData["UserLogin"] = username;
+            return RedirectToAction("Index", "Home");
+        }
         public IActionResult Signin()
         {
+            TempData["CartItem"] = _cartDetailService.GetAllCartDetail().Count;
+            var username = HttpContext.Session.GetString("UserLoginSession");
+            TempData["UserLogin"] = username;
             return View("Signin");
         }
 
         public IActionResult Login(string user, string pass)
         {
-            if (/*user.Length <= 6 || */Regex.IsMatch(user, @"[!@#$%^&*()_+{}\[\]:;""',.<>/?\\|~-]"))
+            if (user.Length <= 6 || Regex.IsMatch(user, @"[!@#$%^&*()_+{}\[\]:;""',.<>/?\\|~-]"))
             {
                 var thongbao = "UserName must be longer than 6 characters and contains no special characters";
                 TempData["User"] = thongbao;
-                return RedirectToAction("Login", new { thongbao });
+                return RedirectToAction("Signin", new { thongbao });
             }
             if (pass.Length <= 6 || Regex.IsMatch(pass, @"[!@#$%^&*()_+{}\[\]:;""',.<>/?\\|~-]"))
             {
                 var thongbao = "Password must be longer than 6 characters and contains no special characters";
                 TempData["Pass"] = thongbao;
-                return RedirectToAction("Login", new { thongbao });
+                return RedirectToAction("Signin", new { thongbao });
             }
 
             var users = _userService.GetAllUsers();
@@ -105,12 +141,15 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
             {
                 if (user == item.UserName && pass == item.Password)
                 {
-                    return RedirectToAction("Index");
+                    var username = item.FullName;
+                    HttpContext.Session.SetString("UserLoginSession", username);
+                    TempData["UserLogin"] = username;
+                    return RedirectToAction("Index", "Home",new {username});
                 }
             }
             var tb = "Username or password incorrect";
             TempData["UserPass"] = tb;
-            return RedirectToAction("Login", new { tb });
+            return RedirectToAction("Signin", new { tb });
         }
         public IActionResult CheckOut()
         {
@@ -122,19 +161,12 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
                 totalAmount += cartDetail.Product.Price * cartDetail.Quantity;
             }
             var cartViewModel = new CartViewModel { CartDetails = cartDetails, TotalAmount = totalAmount };
+            TempData["CartItem"] = _cartDetailService.GetAllCartDetail().Count;
+            var username = HttpContext.Session.GetString("UserLoginSession");
+            TempData["UserLogin"] = username;
             return View("CheckOut", cartViewModel);
         }
 
-        public IActionResult Search(string search)
-        {
-            if (string.IsNullOrEmpty(search))
-            {
-                return RedirectToAction("Shop");
-            }
-            var check = _productService.GetProductByName(search);
-            var viewModel = new ProductViewModel(){ Products = check};
-            return View("Shop", viewModel);
-        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

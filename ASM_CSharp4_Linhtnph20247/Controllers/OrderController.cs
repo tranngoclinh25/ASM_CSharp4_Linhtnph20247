@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using ASM_CSharp4_Linhtnph20247.Models;
 using Microsoft.EntityFrameworkCore;
+using static NuGet.Packaging.PackagingConstants;
 
 namespace ASM_CSharp4_Linhtnph20247.Controllers
 {
@@ -25,18 +26,25 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
             _orderDetailService = new OrderDetailService();
             _cartDetailService = new CartDetailService();
         }
-
-        public IActionResult Order()
+        [HttpGet]
+        public IActionResult Order(string filter)
         {
             //var order = _orderService.GetOrderById(currentUserId); //Phân quyền: Lấy thông tin hóa đơn của người dùng hiện tại đang Login
             var orderDetails = _orderDetailService.GetAllOrderDetail()/*.Where(od => od.OrderId == order.Id)*/;
-            var order = _orderService.GetAllOrder();
+            var orders = _orderService.GetAllOrder();
+            if (!string.IsNullOrEmpty(filter) && filter != "All")
+            {
+                orders = _orderService.GetAllOrder().Where(o => o.Status == Convert.ToInt32(filter)).ToList();
+            }
             float totalPrice = 0;
             foreach (var orderDetail in orderDetails)
             {
                 totalPrice += orderDetail.Product.Price * orderDetail.Quantity;
             }
-            var orderViewModel = new OrderViewModel() { OrderDetails = orderDetails, Orders = order, TotalPrice = totalPrice };
+            var orderViewModel = new OrderViewModel() { OrderDetails = orderDetails, Orders = orders, TotalPrice = totalPrice };
+            TempData["CartItem"] = _cartDetailService.GetAllCartDetail().Count;
+            var username = HttpContext.Session.GetString("UserLoginSession");
+            TempData["UserLogin"] = username;
             return View(orderViewModel);
         }
         public IActionResult OrderDetail(Guid id)
@@ -50,6 +58,9 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
                 totalPrice += orderDetail.Product.Price * orderDetail.Quantity;
             }
             var orderViewModel = new OrderViewModel() { OrderDetails = orderDetails, Orders = order, TotalPrice = totalPrice };
+            TempData["CartItem"] = _cartDetailService.GetAllCartDetail().Count;
+            var username = HttpContext.Session.GetString("UserLoginSession");
+            TempData["UserLogin"] = username;
             return View(orderViewModel);
         }
         [HttpPost]
@@ -88,7 +99,7 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
                     ShoppingAddress = "Hà Nội",
                     PaymentMethod = "Thanh toán khi nhận hàng",
                     TotalPrice = model.TotalAmount,
-                    Status = 1
+                    Status = 0
                 };
                 if (_orderService.CreateOrder(order) == false)
                     return RedirectToAction("CheckOut", "Home");

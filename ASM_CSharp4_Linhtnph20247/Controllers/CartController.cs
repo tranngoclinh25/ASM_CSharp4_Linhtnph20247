@@ -35,6 +35,8 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
             }
             var cartViewModel = new CartViewModel { CartDetails = cartDetails, TotalAmount = totalAmount};
             TempData["CartItem"] = cartDetails.Count;
+            var username = HttpContext.Session.GetString("UserLoginSession");
+            TempData["UserLogin"] = username;
             return View(cartViewModel);
         }
         [HttpPost]
@@ -87,7 +89,7 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
                     return RedirectToAction("Cart");
 
             }
-            return RedirectToAction("ProductDetail", "Home");
+            return RedirectToAction("ProductDetail", "Home", new {id = productId});
         }
 
         public IActionResult UpdateQuantity(CartViewModel model)

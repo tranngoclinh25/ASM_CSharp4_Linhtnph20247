@@ -15,17 +15,22 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
         private readonly IProductService _productService;
         private readonly ISizeService _sizeService;
         private readonly IBrandService _brandService;
+        private readonly ICartDetailService _cartDetailService;
         public ProductController(ILogger<ProductController> logger)
         {
             _logger = logger;
             _productService = new ProductService();
             _sizeService = new SizeService();
             _brandService = new BrandService();
+            _cartDetailService = new CartDetailService();
         }
         public IActionResult Product()
         {
             var viewModel = new ProductViewModel();
             viewModel.Products = _productService.GetAllProduct();
+            TempData["CartItem"] = _cartDetailService.GetAllCartDetail().Count;
+            var username = HttpContext.Session.GetString("UserLoginSession");
+            TempData["UserLogin"] = username;
             return View("Product",viewModel);
         }
 
@@ -44,6 +49,9 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
                 Text = b.Name
             }).ToList()
         };
+            TempData["CartItem"] = _cartDetailService.GetAllCartDetail().Count;
+            var username = HttpContext.Session.GetString("UserLoginSession");
+            TempData["UserLogin"] = username;
             return View(viewModel);
         }
         [HttpPost]
@@ -114,10 +122,11 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
                 //Gán lại giá trị ImageUrl của đối tượng bằng file ảnh đã Copy
                 model.ImageUrl = imageFile.FileName;
             }
-            else
-            {
-                model.ImageUrl = _productService.GetProductById(id).ImageUrl;
-            }
+            //else
+            //{
+            //    model.ImageUrl = _productService.GetProductById(id).ImageUrl;
+            //}
+
             //var product = _productService.GetProductById(id);
             //if (product.Name != model.Name || product.BrandId != model.BrandId)
             //{
@@ -128,7 +137,7 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
             //        {
             //            var thongbao = "(Name + Brand) already exists!";
             //            TempData["ThongBaoUpdate"] = thongbao;
-            //            return RedirectToAction("Edit", new { thongbao });
+            //            return View(model);
             //        }
             //    }
             //}
@@ -178,6 +187,9 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
                 }).ToList(),
                 BrandName = product.Brand.Name,
             };
+            TempData["CartItem"] = _cartDetailService.GetAllCartDetail().Count;
+            var username = HttpContext.Session.GetString("UserLoginSession");
+            TempData["UserLogin"] = username;
             return View(viewModel);
         }
         [HttpGet]
@@ -190,6 +202,9 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
                 Size = product.Size,
                 Brand = product.Brand
             };
+            TempData["CartItem"] = _cartDetailService.GetAllCartDetail().Count;
+            var username = HttpContext.Session.GetString("UserLoginSession");
+            TempData["UserLogin"] = username;
             return View(viewModel);
         }
         public IActionResult Delete(Guid id)
