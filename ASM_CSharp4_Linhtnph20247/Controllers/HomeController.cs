@@ -144,13 +144,43 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
                     var username = item.FullName;
                     HttpContext.Session.SetString("UserLoginSession", username);
                     TempData["UserLogin"] = username;
-                    return RedirectToAction("Index", "Home",new {username});
+                    return RedirectToAction("Index", "Home", new { username });
                 }
             }
             var tb = "Username or password incorrect";
             TempData["UserPass"] = tb;
             return RedirectToAction("Signin", new { tb });
         }
+        //public IActionResult Login(string user, string pass)
+        //{
+        //    if (user.Length <= pass.Length)
+        //    {
+        //        var thongbao = "Tài khoản phải dài hơn hơn mật khẩu";
+        //        TempData["User"] = thongbao;
+        //        return RedirectToAction("Signin", new { thongbao });
+        //    }
+        //    if (Regex.IsMatch(user, @"[0-9]"))
+        //    {
+        //        var thongbao = "Tài khoản không được nhập số";
+        //        TempData["User"] = thongbao;
+        //        return RedirectToAction("Signin", new { thongbao });
+        //    }
+
+        //    var users = _userService.GetAllUsers();
+        //    foreach (var item in users)
+        //    {
+        //        if (user == item.UserName && pass == item.Password)
+        //        {
+        //            var username = item.FullName;
+        //            HttpContext.Session.SetString("UserLoginSession", username);
+        //            TempData["UserLogin"] = username;
+        //            return RedirectToAction("Order", "Order", new { username });
+        //        }
+        //    }
+        //    var tb = "Username or password incorrect";
+        //    TempData["UserPass"] = tb;
+        //    return RedirectToAction("Signin", new { tb });
+        //}
         public IActionResult CheckOut()
         {
             //var cart = _context.Carts.FirstOrDefault(c => c.UserId == currentUserId); //Phân quyền: Lấy thông tin giỏ hàng của người dùng hiện tại

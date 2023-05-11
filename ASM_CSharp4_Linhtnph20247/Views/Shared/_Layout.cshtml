@@ -57,8 +57,13 @@
         </div>
         @if (TempData["UserLogin"] != null)
         {
-            <div class="header__top__right__auth">
-                <a href="#"><i class="fa fa-user"></i> @TempData["UserLogin"]</a>
+            <div class="header__top__right__auth header__top__right__language">
+                <div><img src="~/Styles/img/blog/details/details-admin.jpg" height="25px">  @TempData["UserLogin"]</div>
+                <span class="arrow_carrot-down"></span>
+                <ul>
+                    <li><a href="#">Information</a></li>
+                    <li><a href="/Home/Logout">Logout</a></li>
+                </ul>
             </div>
         }
         else

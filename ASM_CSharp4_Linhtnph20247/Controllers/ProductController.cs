@@ -127,20 +127,6 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
             //    model.ImageUrl = _productService.GetProductById(id).ImageUrl;
             //}
 
-            //var product = _productService.GetProductById(id);
-            //if (product.Name != model.Name || product.BrandId != model.BrandId)
-            //{
-            //    var products = _productService.GetAllProduct();
-            //    foreach (var item in products)
-            //    {
-            //        if (item.Name == model.Name && item.BrandId == model.BrandId)
-            //        {
-            //            var thongbao = "(Name + Brand) already exists!";
-            //            TempData["ThongBaoUpdate"] = thongbao;
-            //            return View(model);
-            //        }
-            //    }
-            //}
             if (_productService.UpdateProduct(model, id))
             {
                 return RedirectToAction("Redirect");

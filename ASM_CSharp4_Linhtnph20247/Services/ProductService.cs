@@ -18,6 +18,11 @@ namespace ASM_CSharp4_Linhtnph20247.Services
         {
             return _shopDbContext.Products.Include(p=>p.Brand).Include(p=>p.Size).Where(p=>p.Status == 1).ToList(); // Lấy tất cả các sản phẩm
         }
+        public List<Product> GetAllProductPrice(float min, float max)
+        {
+            return _shopDbContext.Products.Include(p => p.Brand).Include(p => p.Size)
+                .Where(p => p.Price >= min && p.Price <= max).ToList();
+        }
 
         public Product GetProductById(Guid id)
         {
